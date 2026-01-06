@@ -1,0 +1,671 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CNet.Web.Api</name>
+    </assembly>
+    <members>
+        <member name="T:CNet.Web.Api.NoOprationLogAttribute">
+            <summary>
+            禁用操作日志
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.WebApiExceptionAttribute">
+            <summary>
+            异常捕获
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.Controllers.AuthroizeController">
+            <summary>
+            认证
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.AuthroizeController.Post(CNet.Web.Api.LoginViewModel)">
+            <summary>
+            登录获取token
+            </summary>
+            <param name="loginViewModel">登录实体信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.AuthroizeController.IsCaptcha">
+            <summary>
+            是否开启验证码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.AuthroizeController.GetMenu">
+            <summary>
+            获取菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.AuthroizeController.GetUserAccess">
+            <summary>
+            获取菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.CaptchaController.Generate(System.String)">
+            <summary>
+            生成
+            </summary>
+            <param name="captchaId">验证码id</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.CaptchaController.Check(System.String,Lazy.SlideCaptcha.Core.Validator.SlideTrack)">
+            <summary>
+            验证
+            </summary>
+            <param name="captchaId">验证码id</param>
+            <param name="track">滑动轨迹</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.GetList">
+             <summary>
+             获取所有
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.Get(System.Int64)">
+            <summary>
+            获取详细
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.GetPage(CNet.Model.PageDataReq)">
+            <summary>
+            获取分页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.Add(CNet.Model.Main.gen_log)">
+            <summary>
+            添加角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.Edit(CNet.Model.Main.gen_log)">
+            <summary>
+            编辑
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.gen_logController.Remove(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubDeptController.GetChildList(System.String)">
+            <summary>
+            获取子部门列表
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubDeptController.Add(CNet.Model.Main.Pub_Department)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubDeptController.Edit(CNet.Model.Main.Pub_Department)">
+            <summary>
+            编辑
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubDeptController.Delete(System.String)">
+            <summary>
+            删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubDeptController.GetModel(System.String)">
+            <summary>
+            获取实体
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.GetChildList(System.String)">
+            <summary>
+            获取子权限列表
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.Add(CNet.Model.Main.Pub_Function)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.Edit(CNet.Model.Main.Pub_Function)">
+            <summary>
+            编辑
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.Delete(System.String)">
+            <summary>
+            删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.GetMenu">
+            <summary>
+            获取左侧菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.GetMenuItem(CNet.Model.Main.Pub_Function)">
+            <summary>
+            菜单明细项
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.GetMenuChild(System.Collections.Generic.List{CNet.Model.Main.Pub_Function},System.String)">
+            <summary>
+            菜单子项
+            </summary>
+            <param name="functions"></param>
+            <param name="parentCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubFunctionController.GetModel(System.String)">
+            <summary>
+            获取实体
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.path">
+            <summary>
+            路由路径
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.children">
+            <summary>
+            子组件
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.Meta.icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.Meta.notCache">
+            <summary>
+            不缓存 
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.Meta.title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.Meta.access">
+            <summary>
+            权限列表
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Controllers.PubFunctionController.Menu.Meta.isNewWindow">
+            <summary>
+            是否新窗口
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.GetPage(CNet.Model.PageDataReq)">
+            <summary>
+            获取角色分页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.Add(CNet.Model.Main.Pub_Role)">
+            <summary>
+            添加角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.Edit(CNet.Model.Main.Pub_Role)">
+            <summary>
+            编辑角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.Delete(System.Int64)">
+            <summary>
+            删除角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.GetFunctions(System.String)">
+            <summary>
+            获取角色权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.SaveFunctions(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            保存角色权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubRoleController.GetModel(System.String)">
+            <summary>
+            获取实体
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.GetPage(CNet.Model.PageDataReq)">
+            <summary>
+            获取用户分页1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.Add(CNet.Model.Main.V_Pubuser_Dept)">
+            <summary>
+            添加用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.Edit(CNet.Model.Main.V_Pubuser_Dept)">
+            <summary>
+            编辑用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.Delete(System.Int64)">
+            <summary>
+            删除用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.GetFunctions(System.String)">
+            <summary>
+            获取用户权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.SaveFunctions(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            保存用户权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.Logout">
+            <summary>
+            注销登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.GetModel(System.Int64)">
+            <summary>
+            获取用户实体
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.ChangeUserStatus(System.Int64,System.Int32)">
+            <summary>
+            启用 停用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.ResetPassWord(System.Object)">
+             <summary>
+            重置密码
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.PubUserController.GetRoleFunctions(System.String)">
+            <summary>
+            获取用户角色权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.GetList">
+             <summary>
+             获取所有
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.Get(System.Int64)">
+            <summary>
+            获取详细
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.GetPage(CNet.Model.PageDataReq)">
+            <summary>
+            获取分页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.Add(CNet.Model.Main.test_table)">
+            <summary>
+            添加角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.Edit(CNet.Model.Main.test_table)">
+            <summary>
+            编辑
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Controllers.test_tableController.Remove(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CNet.Web.Api.NonFormatResultAttribute">
+            <summary>
+            不格式化结果数据
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.Core.Captcha.ISlideCaptcha.Validate(System.String,Lazy.SlideCaptcha.Core.Validator.SlideTrack,System.Boolean)">
+            <summary>
+            校验
+            </summary>
+            <param name="captchaId">验证码id</param>
+            <param name="slideTrack">滑动轨迹</param>
+            <param name="removeIfSuccess">校验成功时是否移除缓存(用于多次验证)</param>
+            <returns></returns>
+        </member>
+        <member name="T:CNet.Web.Api.FormatResultFilter">
+            <summary>
+            结果格式化过滤器
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.IResultOutput">
+            <summary>
+            结果输出接口
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput.Msg">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.IResultOutput`1">
+            <summary>
+            泛型结果输出接口
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput`1.Data">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput`1.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput`1.Msg">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.IResultOutput`1.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.PageInput">
+            <summary>
+            分页信息输入
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.PageInput.CurrentPage">
+            <summary>
+            当前页标
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.PageInput.PageSize">
+            <summary>
+            每页大小
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.PageInput`1">
+            <summary>
+            分页信息输入
+            </summary>
+            <typeparam name="T">过滤数据</typeparam>
+        </member>
+        <member name="P:CNet.Web.Api.PageInput`1.Filter">
+            <summary>
+            查询条件
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.PageOutput`1">
+            <summary>
+            分页信息输出
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.PageOutput`1.Total">
+            <summary>
+            数据总数
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.PageOutput`1.List">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.ResultOutput`1">
+            <summary>
+            结果输出
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.ResultOutput`1.Success">
+            <summary>
+            是否成功标记
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.ResultOutput`1.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.ResultOutput`1.Msg">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.ResultOutput`1.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput`1.Ok(`0,System.String)">
+            <summary>
+            成功
+            </summary>
+            <param name="data">数据</param>
+            <param name="msg">消息</param>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput`1.NotOk(System.String,`0)">
+            <summary>
+            失败
+            </summary>
+            <param name="msg">消息</param>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="T:CNet.Web.Api.ResultOutput">
+            <summary>
+            静态结果输出
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.Ok``1(``0,System.String)">
+            <summary>
+            成功
+            </summary>
+            <param name="data">数据</param>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.Ok">
+            <summary>
+            成功
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.NotOk``1(System.String,``0)">
+            <summary>
+            失败
+            </summary>
+            <param name="msg">消息</param>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.NotOk(System.String)">
+            <summary>
+            失败
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.Result``1(System.Boolean)">
+            <summary>
+            根据布尔值返回结果
+            </summary>
+            <param name="success"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.ResultOutput.Result(System.Boolean)">
+            <summary>
+            根据布尔值返回结果
+            </summary>
+            <param name="success"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CNet.Web.Api.JwtAuthenticationAttribute">
+            <summary>
+            异常捕获
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.JwtSeetings.Issuer">
+            <summary>
+            谁颁发的jwt
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.JwtSeetings.Audience">
+            <summary>
+            谁使用这个jwt
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.JwtSeetings.SecretKey">
+            <summary>
+            secret是保存在服务器端的，jwt的签发生成也是在服务器端的，secret就是用来进行jwt的签发和jwt的验证，
+            所以，它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret, 那就意味着客户端是可以自我签发jwt了
+            通过jwt header中声明的加密方式进行加盐secret组合加密，然后就构成了jwt的第三部分
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.LoginViewModel.UserName">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.LoginViewModel.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.LoginViewModel.PasswordKey">
+            <summary>
+            密码键
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.LoginViewModel.CaptchaId">
+            <summary>
+            验证码Id
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.LoginViewModel.CaptchaData">
+            <summary>
+            验证码数据
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.ResponseObj`1.Code">
+            <summary>
+            0请求数据错误 1 成功 -1失败
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.Properties.Resources">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Properties.Resources.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:CNet.Web.Api.Properties.Resources.Culture">
+            <summary>
+              重写当前线程的 CurrentUICulture 属性，对
+              使用此强类型资源类的所有资源查找执行重写。
+            </summary>
+        </member>
+        <member name="T:CNet.Web.Api.QueryHelper">
+            <summary>
+            搜索条件
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.QueryHelper.GetWhereStr(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取搜索query
+            </summary>
+        </member>
+        <member name="M:CNet.Web.Api.QueryHelper.InjectionFilter(System.String,System.Boolean)">
+            <summary>
+             过滤危险字符
+            </summary>
+            <param name="inputString">需要过滤字符串</param>
+            <returns>过滤后的字符串</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CNet.Web.Api.QueryHelper.XSSFilter(System.String)" -->
+        <member name="M:CNet.Web.Api.QueryHelper.FlashFilter(System.String)">
+            <summary>
+             过滤字符串中注入Flash代码
+            </summary>
+            <param name="htmlCode">输入字符串</param>
+            <returns>过滤后的字符串</returns>
+        </member>
+        <member name="M:CNet.Web.Api.QueryHelper.SqlFilter(System.String,System.Boolean)">
+            <summary>
+            过滤危险的字符（SQL注入）
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CNet.Web.Api.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
+            <summary>
+            这段代码必须放在Startup类里面
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:CNet.Web.Api.Startup.JWTConfig(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            使用 Microsoft.AspNetCore.Authentication.JwtBearer
+            </summary>
+            <param name="services"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:AuthTokenHeaderParameter" -->
+    </members>
+</doc>

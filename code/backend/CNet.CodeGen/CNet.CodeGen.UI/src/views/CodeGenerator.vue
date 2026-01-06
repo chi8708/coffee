@@ -1,0 +1,667 @@
+<template>
+  <div class="code-generator">
+    <h2>代码生成器</h2>
+    <p>快速生成前后端代码，提升开发效率</p>
+
+    <div class="card">
+      <div class="form-item">
+        <div class="label">
+          数据表
+           <el-checkbox label="权限表" v-model="isRights">权限表</el-checkbox>
+        </div>
+        <el-select v-model="selectedTables" multiple filterable placeholder="请选择数据表" class="select-tables">
+          <el-option v-for="table in tables" :key="table" :label="table" :value="table" />
+        </el-select>
+      </div>
+
+      <div class="options-row">
+        <div class="option-label">后端替换选项</div>
+        <el-checkbox v-model="backendSelectAll" @change="handleBackendSelectAllChange" class="select-all-checkbox">全选</el-checkbox>
+        <el-checkbox-group v-model="backendOptions" @change="handleBackendOptionsChange" class="checkbox-group">
+          <el-checkbox label="Model">Model</el-checkbox>
+          <el-checkbox label="BLL">BLL</el-checkbox>
+          <el-checkbox label="Controller">Controller</el-checkbox>
+        </el-checkbox-group>
+        
+        <div class="option-label frontend-label">前端替换选项</div>
+        <el-checkbox v-model="frontendSelectAll" @change="handleFrontendSelectAllChange" class="select-all-checkbox">全选</el-checkbox>
+        <el-checkbox-group v-model="frontendOptions" @change="handleFrontendOptionsChange" class="checkbox-group">
+          <el-checkbox label="Access">Access</el-checkbox>
+          <el-checkbox label="Model">Model</el-checkbox>
+          <el-checkbox label="API">API</el-checkbox>
+          <el-checkbox label="Views">Views</el-checkbox>
+        </el-checkbox-group>
+        
+        <div class="action-button">
+          <el-button type="primary" @click="generateCode" :loading="isGenerating" :disabled="isGenerating">
+            <i class="el-icon-download"></i>
+            {{ isGenerating ? '正在生成...' : '生成代码' }}
+          </el-button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 添加带边框的生成记录区域 -->
+    <div class="records-container">
+      <div class="records-header">
+        <h3>生成记录</h3>
+      </div>
+      <div class="search-bar">
+        <el-input v-model="queryData.SL_TableName" placeholder="搜索表名..." prefix-icon="el-icon-search" clearable
+          @keyup.enter="fetchGeneratedCode" />
+        <el-button type="primary" @click="fetchGeneratedCode">搜索</el-button>
+      </div>
+      <el-table :data="generatedCodes" class="result-table">
+        <el-table-column prop="tableName" label="表" />
+        <el-table-column label="生成时间">
+          <template #default="scope">
+            {{ formatDateTime(scope.row.createTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="genInfo" label="替换项" />
+        <el-table-column label="操作" width="200">
+          <template #default="scope">
+            <div class="table-actions">
+              <el-button type="primary" size="small" @click="viewCode(scope.row)">
+                查看
+              </el-button>
+              <el-button type="success" size="small" @click="downloadCode(scope.row)">
+                下载
+              </el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div class="pagination-container">
+        <span class="total-info">总数 {{ total }}条</span>
+        <span class="total-info">页数 {{ totalPage }}页</span>
+        <el-select v-model="pageSize" class="page-size-select" @change="handlePageSizeChange">
+          <el-option label="10条/页" :value="10" />
+          <el-option label="20条/页" :value="20" />
+          <el-option label="50条/页" :value="50" />
+        </el-select>
+        <el-pagination :current-page="currentPage" :page-size="pageSize" :total="total"
+          layout="prev, pager, next, jumper" @current-change="handlePageChange" />
+      </div>
+    </div>
+
+    <!-- 添加基本代码预览弹窗 -->
+    <el-dialog 
+      v-model="codePreviewVisible" 
+      title="代码预览" 
+      width="80%" 
+      top="5vh"
+      :before-close="handleCloseCodePreview"
+      class="code-preview-dialog"
+      :key="`code-dialog-${dialogKey}`">
+      <el-tabs v-model="activeTab" type="card" @tab-click="applyHighlight">
+        <el-tab-pane label="后端Model" name="model">
+          <pre class="code-block"><code :key="`model-${dialogKey}`" class="language-csharp">{{ codeContent.model }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="后端BLL" name="bll">
+          <pre class="code-block"><code :key="`bll-${dialogKey}`" class="language-csharp">{{ codeContent.bll }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="后端Controller" name="controller">
+          <pre class="code-block"><code :key="`controller-${dialogKey}`" class="language-csharp">{{ codeContent.controller }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="前端Access" name="access">
+          <pre class="code-block"><code :key="`access-${dialogKey}`" class="language-javascript">{{ codeContent.access }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="前端Model" name="apiModel">
+          <pre class="code-block"><code :key="`access-${dialogKey}`" class="language-javascript">{{ codeContent.apiModel }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="前端API" name="api">
+          <pre class="code-block"><code :key="`api-${dialogKey}`" class="language-javascript">{{ codeContent.api }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="前端Views_List" name="view_list">
+          <pre class="code-block"><code :key="`view_list-${dialogKey}`" class="language-html">{{ codeContent.view_list }}</code></pre>
+        </el-tab-pane>
+        <el-tab-pane label="前端Views_Edit" name="view_edit">
+          <pre class="code-block"><code :key="`view_edit-${dialogKey}`" class="language-html">{{ codeContent.view_edit }}</code></pre>
+        </el-tab-pane>
+      </el-tabs>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="codePreviewVisible = false">关闭</el-button>
+          <el-button type="info" @click="copyCurrentCode">
+            <i class="el-icon-document-copy"></i> 复制当前代码
+          </el-button>
+          <el-button type="primary" @click="downloadCurrentCode">
+            <i class="el-icon-download"></i> 下载当前代码
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, reactive, nextTick, watch, onUnmounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import request from '@/utils/request';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/vs2015.css';
+
+// 定义接口返回数据类型
+interface DataRes<T> {
+  code: number;
+  msg: string;
+  data: T;
+}
+
+// 定义生成代码结果类型
+interface GeneratedCodeResult {
+  tableName: string;
+  code: string;
+  generatedTime: string;
+}
+
+// 定义分页结果类型
+interface PageResult<T> {
+  code: number
+  msg: string;
+  total: number;
+  data: T[]
+}
+
+const tables = ref<string[]>([]);
+const selectedTables = ref<string[]>([]);
+const generatedCodes = ref<GeneratedCodeResult[]>([]);
+const currentPage = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+const totalPage = ref(0);
+const backendSelectAll = ref(true);
+const isRights = ref(false);
+const frontendSelectAll = ref(false);
+const backendOptions = ref<string[]>(['Model', 'BLL', 'Controller']);
+const frontendOptions = ref<string[]>([]);
+const searchKeyword = ref('');
+const goToPage = ref('');
+const queryData =reactive({
+  SL_TableName: ''
+});
+const isGenerating = ref(false);
+
+const fetchTables = async () => {
+  try {
+    const res = await request<DataRes<string[]>>({
+      url: '/api/codegen/tables',
+      method: 'get'
+    });
+
+    if (res.code === 200) {
+      tables.value = res.data;
+    } else {
+      ElMessage.error(res.msg || '获取数据表失败');
+    }
+  } catch (error) {
+    ElMessage.error('获取数据表失败');
+  }
+};
+
+const generateCode = async () => {
+  if (selectedTables.value.length === 0) {
+    ElMessage.warning('请至少选择一个数据表');
+    return;
+  }
+
+  isGenerating.value = true;
+
+  try {
+    const res = await request<DataRes<any>>({
+      url: '/api/codegen/generate',
+      method: 'post',
+      data: {
+        tables: selectedTables.value,
+        isRights: isRights.value,
+        options: {
+          backend: {
+            model: backendOptions.value.includes('Model'),
+            bll: backendOptions.value.includes('BLL'),
+            controller: backendOptions.value.includes('Controller')
+          },
+          frontend: {
+            access: frontendOptions.value.includes('Access'),
+            model: frontendOptions.value.includes('Model'),
+            api: frontendOptions.value.includes('API'),
+            views: frontendOptions.value.includes('Views')
+          }
+        }
+      }
+    });
+
+    if (res.code === 200) {
+      ElMessage.success('代码生成成功');
+      fetchGeneratedCode();
+    } else {
+      ElMessage.error(res.msg || '代码生成失败');
+    }
+  } catch (error) {
+    ElMessage.error('代码生成失败');
+  } finally {
+    isGenerating.value = false;
+  }
+};
+
+const fetchGeneratedCode = async () => {
+  try {
+    const res = await request<PageResult<GeneratedCodeResult>>({
+      url: '/api/codegen/GetPage',
+      method: 'post',
+      data: {
+        pageNum: currentPage.value,
+        pageSize: pageSize.value,
+        field: "Id",
+        order: "desc",
+        query: queryData
+      }
+    });
+
+    if (res.code === 1) {
+      generatedCodes.value = res.data;
+      total.value = res.count || 0;
+      totalPage.value = res.totalPage;
+    } else {
+      ElMessage.error(res.msg || '获取生成的代码列表失败');
+    }
+  } catch (error) {
+    ElMessage.error('获取生成的代码列表失败');
+  }
+};
+
+interface CodeContent {
+  access: string;
+  api: string;
+  view_list: string;
+  view_edit: string;
+  model: string;
+  bll: string;
+  dal: string;
+  controller: string;
+}
+
+// 代码预览相关
+const codePreviewVisible = ref(false);
+const activeTab = ref('model');
+const currentTableName = ref('');
+const codeContent = reactive({
+  model: '',
+  bll: '',
+  controller: '',
+  access: '',
+  api: '',
+  apiModel: '',
+  view_list: '',
+  view_edit: ''
+});
+
+// 给每个弹窗添加唯一key，强制重新渲染
+const dialogKey = ref(0);
+
+// 查看代码功能 - 强化高亮
+const viewCode = async (row: GeneratedCodeResult) => {
+  try {
+    // 重置内容并增加dialogKey强制Vue重新渲染整个弹窗
+    currentTableName.value = row.tableName;
+    codeContent.model = '';
+    codeContent.bll = '';
+    codeContent.controller = '';
+    codeContent.access = '';
+    codeContent.api = '';
+    codeContent.view_list = '';
+    codeContent.view_edit = '';
+    
+    // 增加dialogKey强制重新渲染弹窗
+    dialogKey.value += 1;
+    
+    // 先打开弹窗
+    codePreviewVisible.value = true;
+    
+    // 然后请求数据
+    const res = await request<DataRes<any>>({
+      url: `/api/codegen/view/${row.tableName}`,
+      method: 'get'
+    });
+
+    if (res.code === 200) {
+      // 更新代码内容
+      codeContent.model = res.data.model || '无内容';
+      codeContent.bll = res.data.bll || '无内容';
+      codeContent.controller = res.data.controller || '无内容';
+      codeContent.access = res.data.access || '无内容';
+      codeContent.apiModel = res.data.apiModel || '无内容';
+      codeContent.api = res.data.api || '无内容';
+      codeContent.view_list = res.data.view_list || '无内容';
+      codeContent.view_edit = res.data.view_edit || '无内容';
+      
+      // 等待内容渲染后应用高亮
+      nextTick(() => {
+        setTimeout(applyHighlight, 50);
+        setTimeout(applyHighlight, 200);
+      });
+    } else {
+      ElMessage.error(res.msg || '获取代码内容失败');
+    }
+  } catch (error) {
+    ElMessage.error('获取代码内容失败');
+  }
+};
+
+const downloadCode = (row: GeneratedCodeResult) => {
+  // 使用浏览器下载功能
+  window.location.href = `/api/codegen/download/${row.tableName}`;
+};
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+  fetchGeneratedCode();
+};
+
+const handlePageSizeChange = () => {
+  currentPage.value = 1;
+  fetchGeneratedCode();
+};
+
+// 格式化日期时间，去除T
+const formatDateTime = (dateTimeStr: string) => {
+  if (!dateTimeStr) return '';
+  return dateTimeStr.replace('T', ' ');
+};
+
+// 后端选项全选
+const handleBackendSelectAllChange = (val: boolean) => {
+  backendOptions.value = val ? ['Model', 'BLL', 'Controller'] : [];
+};
+
+// 前端选项全选
+const handleFrontendSelectAllChange = (val: boolean) => {
+  frontendOptions.value = val ? ['Access','Model','API', 'Views'] : [];
+};
+
+// 根据选择情况更新全选状态
+const handleBackendOptionsChange = (value: string[]) => {
+  const allBackendOptions = ['Model', 'BLL', 'Controller'];
+  backendSelectAll.value = value.length === allBackendOptions.length;
+};
+
+// 根据选择情况更新全选状态
+const handleFrontendOptionsChange = (value: string[]) => {
+  const allFrontendOptions = ['Access', 'Model','API', 'Views'];
+  frontendSelectAll.value = value.length === allFrontendOptions.length;
+};
+
+// 关闭弹窗处理
+const handleCloseCodePreview = () => {
+  codePreviewVisible.value = false;
+};
+
+// 下载当前选中的代码
+const downloadCurrentCode = () => {
+  const codeMap = {
+    'model': '后端Model',
+    'bll': '后端BLL',
+    'controller': '后端Controller',
+    'access': '前端Access',
+    'api': '前端API',
+    'view_list': '前端Views_List',
+    'view_edit': '前端Views_Edit'
+  };
+  
+  const content = codeContent[activeTab.value as keyof typeof codeContent];
+  const fileName = `${currentTableName.value}_${codeMap[activeTab.value as keyof typeof codeMap]}.txt`;
+  
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(url);
+};
+
+// 添加复制代码功能
+const copyCurrentCode = () => {
+  const content = codeContent[activeTab.value as keyof typeof codeContent];
+  navigator.clipboard.writeText(content)
+    .then(() => {
+      ElMessage.success('代码已复制到剪贴板');
+    })
+    .catch(() => {
+      ElMessage.error('复制失败，请手动复制');
+    });
+};
+
+// 强化高亮功能
+const applyHighlight = () => {
+  document.querySelectorAll('.code-block code').forEach((block) => {
+    // 先移除可能存在的高亮，然后重新应用
+    block.className = block.className.replace(/hljs/g, '');
+    
+    // 根据tab类型应用不同的语言类
+    const tabName = activeTab.value;
+    if (['model', 'bll', 'controller'].includes(tabName)) {
+      block.className = 'language-csharp';
+    } else if (['access', 'api'].includes(tabName)) {
+      block.className = 'language-javascript';
+    } else {
+      block.className = 'language-html';
+    }
+    
+    // 应用高亮
+    hljs.highlightElement(block as HTMLElement);
+  });
+};
+
+onMounted(() => {
+  fetchTables();
+  fetchGeneratedCode();
+});
+
+// 在组件卸载时清除定时器
+onUnmounted(() => {
+  highlightTimeouts.forEach(timeout => clearTimeout(timeout));
+});
+</script>
+
+<style scoped>
+.code-generator {
+  padding: 20px;
+  font-size: 14px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 14px;
+  color: #606266;
+  margin-bottom: 10px;
+}
+
+.select-tables {
+  width: 100%;
+}
+
+.options-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: nowrap;
+}
+
+.option-label {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.frontend-label {
+  margin-left: 20px;
+}
+
+.select-all-checkbox {
+  margin-right: 10px;
+}
+
+.checkbox-group {
+  display: flex;
+  margin-right: 15px;
+}
+
+.checkbox-group .el-checkbox {
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.action-button {
+  margin-left: auto;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.search-bar .el-input {
+  flex: 1;
+}
+
+.page-size-select {
+  width: 100px;
+  margin-left: 10px;
+}
+
+.result-table {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 13px;
+}
+
+.total-info {
+  margin-right: 10px;
+}
+
+.go-to {
+  margin: 0 10px;
+}
+
+.go-to-input {
+  width: 50px;
+}
+
+.records-container {
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+.records-header {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ebeef5;
+  padding-bottom: 10px;
+}
+
+.records-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #303133;
+}
+
+.code-preview-dialog :deep(.el-dialog__body) {
+  padding-top: 10px;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.code-block {
+  background-color: #1E1E1E;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: auto;
+  max-height: 65vh;
+  position: relative;
+  user-select: text;
+}
+
+.code-block code {
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre;
+  display: block;
+  width: 100%;
+  tab-size: 4;
+  color: #DCDCDC;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog-footer .el-button {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dialog-footer .el-button i {
+  margin-right: 5px;
+}
+
+/* 应用highlight.js样式的辅助类 */
+:deep(.hljs) {
+  background: transparent !important;
+  padding: 0 !important;
+}
+</style>
+
+<style>
+/* 注意: 这里没有使用scoped，确保可以影响动态创建的元素 */
+.hljs {
+  background: #1E1E1E !important;
+  color: #DCDCDC !important;
+  padding: 0 !important;
+}
+
+/* 加强其他高亮样式 */
+.hljs-keyword, .hljs-selector-tag, .hljs-tag {
+  color: #569CD6 !important;
+}
+.hljs-comment {
+  color: #608B4E !important;
+}
+.hljs-string, .hljs-attribute, .hljs-selector-attr {
+  color: #CE9178 !important;
+}
+.hljs-name, .hljs-type {
+  color: #4EC9B0 !important;
+}
+</style>

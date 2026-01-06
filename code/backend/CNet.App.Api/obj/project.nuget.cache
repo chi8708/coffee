@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "VMJjPty1bgaWvHfGilwBEnxM4Tc4F5NZxD7aqvIOUtztj95S6kXZ3T7nghGcgtKVLhzWsr9Vs7nM1v7IpBdyjA==",
+  "success": true,
+  "projectFilePath": "E:\\Study\\ai\\coffee\\code\\backend\\CNet.App.Api\\CNet.App.Api.csproj",
+  "expectedPackageFiles": [
+    "D:\\nuget\\flurl\\4.0.0\\flurl.4.0.0.nupkg.sha512",
+    "D:\\nuget\\flurl.http\\4.0.2\\flurl.http.4.0.2.nupkg.sha512",
+    "D:\\nuget\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "D:\\nuget\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "D:\\nuget\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "D:\\nuget\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "D:\\nuget\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "D:\\nuget\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,52 @@
+﻿@model CNet.CodeGen.Api.Template.TableModel
+@using CNet;
+@using System.Linq;
+
+//////此代码由CNetCodeGen生成， 作者：cts 生成时间：@System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+using System;
+using Dapper.Contrib.Extensions;
+namespace @Config.Namespace1@(".Model.")@Config.Namespace2
+{
+     /// <summary>
+    /// @Model.TableRemark 
+    ///</summary>
+    [Table("@Model.TableName")]
+    public partial class @Model.TableName
+    {
+@{
+    var columns_Primary = Model.Columns.Where(p => p.IsPrimaryKey);
+    var columns_Other = Model.Columns.Where(p => !p.IsPrimaryKey);
+    foreach (var column in columns_Primary)
+    {
+    <text>
+        /// <summary>
+        /// @column.Remark
+        ///</summary>
+        @if (column.IsPrimaryKey && (column.CSharpType == "int" || column.CSharpType == "long"))
+        {
+        <text>
+        [Key]
+        </text>
+        }
+        else if (column.IsPrimaryKey)
+        {
+        <text>
+        [ExplicitKey]
+        </text>
+        }
+    public @column.CSharpType @column.ColumnName { get; set; }
+    </text>
+    }
+    foreach (var column in columns_Other)
+    {
+    <text>
+        /// <summary>
+        /// @column.Remark
+        ///</summary>
+        public @column.CSharpType @column.ColumnName { get; set; }
+    </text>
+    }
+}
+
+   }
+}

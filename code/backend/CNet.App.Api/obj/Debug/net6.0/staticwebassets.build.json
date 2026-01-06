@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "O+RajYpBpTe7yU06iSHDXBWERP3NKG5Qw5LgBYy94ss=",
+  "Source": "CNet.App.Api",
+  "BasePath": "_content/CNet.App.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

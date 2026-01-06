@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CNet.BLL</RootNamespace>
+    <AssemblyName>CNet.BLL</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="T4.DapperExt\Main\1Service.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>1Service.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="T4.DapperExt\ Pub_UserfunctionBLL.cs">
+      <DependentUpon>Service.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CNet.Common\CNet.Common.csproj" />
+    <ProjectReference Include="..\CNet.DAL\CNet.DAL.csproj" />
+    <ProjectReference Include="..\CNet.Model\CNet.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Main\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="T4.DapperExt\Main\1Service.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>1Service.txt</LastGenOutput>
+    </None>
+    <None Update="T4.DapperExt\Main\1Service.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>1Service.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)CNet.DAL.dll&quot; &quot;$(SolutionDir)CNet.Web.Api\lib\&quot; /y&#xD;&#xA;xcopy &quot;$(TargetDir)CNet.BLL.dll&quot; &quot;$(SolutionDir)CNet.Web.Api\lib\&quot; /y" />
+  </Target>
+</Project>

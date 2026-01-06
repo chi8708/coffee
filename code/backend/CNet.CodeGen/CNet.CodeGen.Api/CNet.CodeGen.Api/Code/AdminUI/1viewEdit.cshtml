@@ -1,0 +1,129 @@
+@model CNet.CodeGen.Api.Template.TableModel
+@using CNet;
+@using System.Linq;
+@using CNet.CodeGen.Api.Util;
+@{
+<text>
+<!-- 此代码由CNetCodeGen生成， 作者：cts 生成时间：@System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") -->
+</text>
+    var primaryKeyName = Model.Columns.FirstOrDefault(p => p.IsPrimaryKey)?.ColumnName;
+}
+<template>
+  <el-dialog v-model="state.showDialog" v-if="state.showDialog" destroy-on-close :title="props.title" draggable
+    :close-on-click-modal="false" :close-on-press-escape="false" width="769px" >
+    <el-form ref="formRef" size="default" label-width="80px" :model="form" >
+      <el-row :gutter="10">
+         @foreach (var column in Model.Columns)
+        {
+           if (column.ColumnName != primaryKeyName&&column.ColumnName.ToLower()!="stopflag")
+           {
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+            <el-form-item label="@(string.IsNullOrEmpty(column.Remark)?column.ColumnName:column.Remark)" prop="@GenByRazor.ToLowerPascalCase(column.ColumnName)" @(column.IsNullable ? "" : " :rules='[{ required: true, message: \"必填\", trigger: [\"blur\", \"change\"] }]'")>
+            @if (column.CSharpType == "DateTime")
+            {
+                <el-date-picker v-model="form.@GenByRazor.ToLowerPascalCase(column.ColumnName)" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" style="width: 100%" />
+            }
+            else if (column.CSharpType == "bool")
+            {
+                <el-switch v-model="form.@GenByRazor.ToLowerPascalCase(column.ColumnName)" inline-prompt active-text="是" inactive-text="否" />
+            }
+            else
+            {
+                <el-input v-model="form.@GenByRazor.ToLowerPascalCase(column.ColumnName)" autocomplete="off" />
+            }
+            </el-form-item>
+        </el-col>
+            }
+        }
+      </el-row>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @@click="onCancel" size="default">取 消</el-button>
+        <el-button type="primary" @@click="onSure" size="default" :loading="state.sureLoading">确 定</el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+
+<script  lang="ts" setup>
+import { reactive, toRefs, getCurrentInstance, ref, watch, defineAsyncComponent, computed, onMounted } from 'vue'
+import eventBus from '/@@/utils/mitt'
+import { FormInstance } from 'element-plus'
+import { @Model.TableName } from '/@@/api/model/@Model.TableName'
+import { @(Model.TableName)Api } from '/@@/api/admin/@Model.TableName'
+
+var props= defineProps({
+  title: { type: String, required: true, default: '新增' },
+})
+
+const state = reactive({
+  sureLoading: false,
+  showDialog: false,
+  form: {} as @(Model.TableName),
+  isEdit: false,
+  title: '新增'
+})
+const { form } = toRefs(state)
+onMounted(() => {
+
+})
+
+const { proxy } = getCurrentInstance() as any
+const formRef = ref<FormInstance>()
+
+// 取消
+const onCancel = () => {
+  state.showDialog = false
+}
+
+// 确定
+const onSure = () => {
+  formRef.value!.validate(async (valid: boolean) => {
+    if (!valid) return
+
+    state.sureLoading = true
+    let res = {} as any
+    if (state.form.id != undefined && state.form.id > 0) {
+         res = await new @(Model.TableName)Api().edit_base(state.form, { showSuccessMessage: true }).catch(() => {
+      })
+    } else {
+         res = await new @(Model.TableName)Api().add_base(state.form, { showSuccessMessage: true }).catch(() => {
+      })
+    }
+    state.sureLoading = false
+
+    if (res?.code==1) {
+      state.showDialog = false;
+      eventBus.emit('refreshList');
+
+    }
+  })
+}
+
+
+// 打开对话框
+ const open = async (row: @(Model.TableName) | null) => {
+   //proxy.$modal.loading()
+  state.showDialog = true;
+    if (row && row.@GenByRazor.ToLowerPascalCase(primaryKeyName)) {
+    const res = await new @(Model.TableName)Api().getModel_base(row.@GenByRazor.ToLowerPascalCase(primaryKeyName)).catch(() => { });
+    if(res?.code==1){
+       state.isEdit=true;
+       state.form = res.data as @(Model.TableName);
+    }
+  }
+  else{
+      state.isEdit = false
+      state.form = {};
+  }
+  //proxy.$modal.closeLoading()
+
+}
+
+defineExpose({
+  open
+});
+
+</script>
+

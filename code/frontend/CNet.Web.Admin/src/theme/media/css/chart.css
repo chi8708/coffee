@@ -1,0 +1,101 @@
+@charset "UTF-8";
+/* 栅格布局（媒体查询变量）
+* https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Media_queries
+* $us ≥376px  响应式栅格
+* $xs ≥576px  响应式栅格
+* $sm ≥768px  响应式栅格
+* $md ≥992px  响应式栅格
+* $lg ≥1200px 响应式栅格
+* $xl ≥1920px 响应式栅格
+------------------------------- */
+/* 页面宽度小于768px
+------------------------------- */
+@media screen and (max-width: 768px) {
+  .big-data-down-left {
+    width: 100% !important;
+    -webkit-flex-direction: unset !important;
+       -moz-box-orient: unset !important;
+       -moz-box-direction: unset !important;
+        -ms-flex-direction: unset !important;
+            flex-direction: unset !important;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+  }
+  .big-data-down-left .flex-warp-item {
+    min-height: 196.24px;
+    padding: 0 7.5px 15px 15px !important;
+  }
+  .big-data-down-left .flex-warp-item .flex-warp-item-box {
+    border: none !important;
+    border-bottom: 1px solid #ebeef5 !important;
+  }
+  .big-data-down-center {
+    width: 100% !important;
+  }
+  .big-data-down-center .big-data-down-center-one,
+.big-data-down-center .big-data-down-center-two {
+    min-height: 196.24px;
+    padding-left: 15px !important;
+  }
+  .big-data-down-center .big-data-down-center-one .big-data-down-center-one-content, .big-data-down-center .big-data-down-center-one .flex-warp-item-box,
+.big-data-down-center .big-data-down-center-two .big-data-down-center-one-content,
+.big-data-down-center .big-data-down-center-two .flex-warp-item-box {
+    border: none !important;
+    border-bottom: 1px solid #ebeef5 !important;
+  }
+  .big-data-down-right .flex-warp-item .flex-warp-item-box {
+    border: none !important;
+    border-bottom: 1px solid #ebeef5 !important;
+  }
+  .big-data-down-right .flex-warp-item:nth-of-type(2) {
+    padding-left: 15px !important;
+  }
+  .big-data-down-right .flex-warp-item:last-of-type .flex-warp-item-box {
+    border: none !important;
+  }
+}
+/* 页面宽度大于768px小于1200px
+------------------------------- */
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .chart-warp-bottom .big-data-down-left {
+    width: 50% !important;
+  }
+  .chart-warp-bottom .big-data-down-center {
+    width: 50% !important;
+  }
+  .chart-warp-bottom .big-data-down-right .flex-warp-item {
+    width: 50% !important;
+  }
+  .chart-warp-bottom .big-data-down-right .flex-warp-item:nth-of-type(2) {
+    padding-left: 7.5px !important;
+  }
+}
+/* 页面宽度小于1200px
+------------------------------- */
+@media screen and (max-width: 1200px) {
+  .chart-warp-top .up-left {
+    display: none;
+  }
+  .chart-warp-bottom {
+    overflow-y: auto !important;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+  }
+  .chart-warp-bottom .big-data-down-right {
+    width: 100% !important;
+    -webkit-flex-direction: unset !important;
+       -moz-box-orient: unset !important;
+       -moz-box-direction: unset !important;
+        -ms-flex-direction: unset !important;
+            flex-direction: unset !important;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+  }
+  .chart-warp-bottom .big-data-down-right .flex-warp-item {
+    min-height: 196.24px;
+    padding: 0 7.5px 15px 15px !important;
+  }
+}

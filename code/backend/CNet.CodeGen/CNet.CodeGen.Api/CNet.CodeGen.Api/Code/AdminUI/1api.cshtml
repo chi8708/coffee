@@ -1,0 +1,12 @@
+﻿@model CNet.CodeGen.Api.Template.TableModel
+@using CNet;
+
+//////此代码由CNetCodeGen生成， 作者：cts 生成时间：@System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+import { BaseService,UtilRes } from './BaseService'
+import { RequestParams,FullRequestParams ,ContentType} from './gen/http-client'
+import { @Model.TableName } from '/@@/api/model/@Model.TableName'
+export class @(Model.TableName)Api extends BaseService<@Model.TableName>{
+   constructor() {
+    super("@Model.TableName");
+   }
+}

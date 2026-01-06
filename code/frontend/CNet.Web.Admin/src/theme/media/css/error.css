@@ -1,0 +1,54 @@
+@charset "UTF-8";
+/* 栅格布局（媒体查询变量）
+* https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Media_queries
+* $us ≥376px  响应式栅格
+* $xs ≥576px  响应式栅格
+* $sm ≥768px  响应式栅格
+* $md ≥992px  响应式栅格
+* $lg ≥1200px 响应式栅格
+* $xl ≥1920px 响应式栅格
+------------------------------- */
+/* 页面宽度小于768px
+------------------------------- */
+@media screen and (max-width: 768px) {
+  .error .error-flex {
+    -webkit-flex-direction: column-reverse !important;
+       -moz-box-orient: vertical !important;
+       -moz-box-direction: reverse !important;
+        -ms-flex-direction: column-reverse !important;
+            flex-direction: column-reverse !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+  .error .right,
+.error .left {
+    -webkit-flex: unset !important;
+       -moz-box-flex: unset !important;
+        -ms-flex: unset !important;
+            flex: unset !important;
+    display: -webkit-flex !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+  .error .left-item, .error .right img {
+    margin: auto !important;
+  }
+  .error .right img {
+    max-width: 450px !important;
+  }
+}
+/* 页面宽度大于768px小于992px
+------------------------------- */
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .error .error-flex {
+    padding-left: 30px !important;
+  }
+}
+/* 页面宽度小于1200px
+------------------------------- */
+@media screen and (max-width: 1200px) {
+  .error .error-flex {
+    padding: 0 30px;
+  }
+}

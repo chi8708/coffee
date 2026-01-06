@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* 栅格布局（媒体查询变量）
+* https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Media_queries
+* $us ≥376px  响应式栅格
+* $xs ≥576px  响应式栅格
+* $sm ≥768px  响应式栅格
+* $md ≥992px  响应式栅格
+* $lg ≥1200px 响应式栅格
+* $xl ≥1920px 响应式栅格
+------------------------------- */
+/* 页面宽度小于576px
+------------------------------- */
+@media screen and (max-width: 576px) {
+  .el-form-item__label {
+    width: 100% !important;
+    text-align: left !important;
+    -webkit-justify-content: flex-start !important;
+       -moz-box-pack: start !important;
+        -ms-flex-pack: start !important;
+            justify-content: flex-start !important;
+    height: unset !important;
+    line-height: unset !important;
+    margin-bottom: 5px;
+  }
+  .el-form-item__content {
+    margin-left: 0 !important;
+  }
+  .el-form-item {
+    display: unset !important;
+  }
+  .table-form-btn {
+    display: -webkit-flex !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+  .table-form-btn .el-form-item__label {
+    width: auto !important;
+  }
+  .table-search-container {
+    max-height: 160px;
+    overflow: auto;
+  }
+}

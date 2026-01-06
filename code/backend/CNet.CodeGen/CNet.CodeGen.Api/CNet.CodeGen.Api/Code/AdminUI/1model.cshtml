@@ -1,0 +1,14 @@
+﻿@model CNet.CodeGen.Api.Template.TableModel
+@using CNet.CodeGen.Api.Util;
+@using CNet;
+//////此代码由CNetCodeGen生成， 作者：cts 生成时间：@System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+@{
+@://@Model.TableRemark
+@:export interface @Model.TableName {
+foreach (var column in Model.Columns)
+{
+    @:/** @column.Remark **/
+    @:@GenByRazor.ToLowerPascalCase(column.ColumnName)?: @TypeUtil.CSharpTypeToTypeScript(column.CSharpType);
+}
+@:}
+}
