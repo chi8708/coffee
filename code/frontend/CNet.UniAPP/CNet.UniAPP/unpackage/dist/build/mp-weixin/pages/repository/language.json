@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "u-list": "/node-modules/uview-ui/components/u-list/u-list",
-    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell"
-  },
-  "component": true
-}
